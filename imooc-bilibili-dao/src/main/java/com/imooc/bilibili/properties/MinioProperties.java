@@ -1,7 +1,6 @@
 package com.imooc.bilibili.properties;
 
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -18,15 +17,13 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "minio")
 public class MinioProperties {
 
-    @Value("${endpoint}")
-    private String endpoint;
+    private String endpoint = "http://127.0.0.1:9000";
 
-    @Value("${accessKey}")
-    private String accessKey;
+    private String accessKey = "admin";
 
-    @Value("${secretKey}")
-    private String secretKey;
+    private String secretKey = "password";
 
-    @Value("${bucketName}")
-    private String bucketName;
+    private String bucketName = "test";
+
+
 }
