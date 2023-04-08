@@ -1,5 +1,10 @@
 package com.imooc.bilibili.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.imooc.bilibili.dao.VideoDao;
 import com.imooc.bilibili.domain.*;
 import com.imooc.bilibili.domain.exception.ConditionException;
@@ -43,7 +48,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-public class VideoService {
+public class VideoService extends ServiceImpl<VideoDao, Video> implements IService<Video> {
 
     @Autowired
     private VideoDao videoDao;
@@ -69,7 +74,7 @@ public class VideoService {
     public void addVideos(Video video) {
         Date now = new Date();
         video.setCreateTime(new Date());
-        videoDao.addVideos(video);
+        videoDao.insert(video);
         Long videoId = video.getId();
         List<VideoTag> tagList = video.getVideoTagList();
         tagList.forEach(item -> {
@@ -79,20 +84,28 @@ public class VideoService {
         videoDao.batchAddVideoTags(tagList);
     }
 
-    public PageResult<Video> pageListVideos(Integer size, Integer no, String area) {
+//    public PageResult<Video> pageListVideos(Integer size, Integer no, String area) {
+//        if(size == null || no == null){
+//            throw new ConditionException("参数异常！");
+//        }
+//        Map<String, Object> params = new HashMap<>();
+//        params.put("start", (no-1)*size);
+//        params.put("limit", size);
+//        params.put("area" , area);
+//        List<Video> list = new ArrayList<>();
+//        Integer total = videoDao.pageCountVideos(params);
+//        if(total > 0){
+//            list = videoDao.pageListVideos(params);
+//        }
+//        return new PageResult<>(total, list);
+//    }
+
+    public IPage<Video> pageListVideos(Integer size, Integer no, String area) {
         if(size == null || no == null){
             throw new ConditionException("参数异常！");
         }
-        Map<String, Object> params = new HashMap<>();
-        params.put("start", (no-1)*size);
-        params.put("limit", size);
-        params.put("area" , area);
-        List<Video> list = new ArrayList<>();
-        Integer total = videoDao.pageCountVideos(params);
-        if(total > 0){
-            list = videoDao.pageListVideos(params);
-        }
-        return new PageResult<>(total, list);
+        IPage<Video> page = new Page<>(no, size);
+        return videoDao.selectPage(page, new QueryWrapper<Video>().eq("area", area));
     }
 
     public void viewVideoOnlineBySlices(HttpServletRequest request,
@@ -229,7 +242,7 @@ public class VideoService {
         videoDao.addVideoComment(videoComment);
     }
 
-    public PageResult<VideoComment> pageListVideoComments(Integer size, Integer no, Long videoId) {
+    public IPage<VideoComment> pageListVideoComments(Integer size, Integer no, Long videoId) {
         Video video = videoDao.getVideoById(videoId);
         if(video == null){
             throw new ConditionException("非法视频！");
@@ -267,7 +280,10 @@ public class VideoService {
                 comment.setUserInfo(userInfoMap.get(comment.getUserId()));
             });
         }
-        return new PageResult<>(total, list);
+        IPage<VideoComment> page = new Page<>();
+        page.setTotal(total);
+        page.setRecords(list);
+        return page;
     }
 
     public Map<String, Object> getVideoDetails(Long videoId) {

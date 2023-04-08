@@ -33,6 +33,11 @@ public class DemoApi {
     @Autowired
     private MsDeclareService msDeclareService;
 
+    @GetMapping("test")
+    public String test() {
+        return "test";
+    }
+
     @GetMapping("/query")
     public Long query(Long id){
         return demoService.query(id);

@@ -7,6 +7,8 @@ import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.imooc.bilibili.domain.exception.ConditionException;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -16,23 +18,22 @@ public class TokenUtil {
 
     public static String generateToken(Long userId) throws Exception{
         Algorithm algorithm = Algorithm.RSA256(RSAUtil.getPublicKey(), RSAUtil.getPrivateKey());
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new Date());
-        calendar.add(Calendar.HOUR, 1);
+        LocalDateTime time = LocalDateTime.now();
+        time.plusHours(1);
         return JWT.create().withKeyId(String.valueOf(userId))
                 .withIssuer(ISSUER)
-                .withExpiresAt(calendar.getTime())
+                //LocalDateTime转Date
+                .withExpiresAt(Date.from(time.atZone(ZoneId.systemDefault()).toInstant()))
                 .sign(algorithm);
     }
 
     public static String generateRefreshToken(Long userId) throws Exception{
         Algorithm algorithm = Algorithm.RSA256(RSAUtil.getPublicKey(), RSAUtil.getPrivateKey());
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new Date());
-        calendar.add(Calendar.DAY_OF_MONTH, 7);
+        LocalDateTime time = LocalDateTime.now();
+        time.plusHours(1);
         return JWT.create().withKeyId(String.valueOf(userId))
                 .withIssuer(ISSUER)
-                .withExpiresAt(calendar.getTime())
+                .withExpiresAt(Date.from(time.atZone(ZoneId.systemDefault()).toInstant()))
                 .sign(algorithm);
     }
 

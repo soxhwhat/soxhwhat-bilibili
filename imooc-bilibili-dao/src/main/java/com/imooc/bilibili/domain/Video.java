@@ -1,5 +1,7 @@
 package com.imooc.bilibili.domain;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
@@ -9,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 @Document(indexName = "videos")
+@TableName("t_video")
 public class Video {
 
     @Id
@@ -30,6 +33,7 @@ public class Video {
 
     private String area;//分区
 
+    @TableField(exist = false)
     private List<VideoTag> videoTagList;//标签列表
 
     @Field(type = FieldType.Text)

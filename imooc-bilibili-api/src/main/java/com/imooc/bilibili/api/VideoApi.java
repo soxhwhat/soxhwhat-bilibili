@@ -2,6 +2,7 @@ package com.imooc.bilibili.api;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.imooc.bilibili.api.support.UserSupport;
 import com.imooc.bilibili.domain.*;
 import com.imooc.bilibili.service.ElasticSearchService;
@@ -45,8 +46,8 @@ public class VideoApi {
      * 分页查询视频列表
      */
     @GetMapping("/videos")
-    public JsonResponse<PageResult<Video>> pageListVideos(Integer size, Integer no, String area){
-        PageResult<Video> result = videoService.pageListVideos(size, no ,area);
+    public JsonResponse<IPage<Video>> pageListVideos(Integer size, Integer no, String area){
+        IPage<Video> result = videoService.pageListVideos(size, no ,area);
         return new JsonResponse<>(result);
     }
 
@@ -164,10 +165,10 @@ public class VideoApi {
      * 分页查询视频评论
      */
     @GetMapping("/video-comments")
-    public JsonResponse<PageResult<VideoComment>> pageListVideoComments(@RequestParam Integer size,
+    public JsonResponse<IPage<VideoComment>> pageListVideoComments(@RequestParam Integer size,
                                                                         @RequestParam Integer no,
                                                                         @RequestParam Long videoId){
-        PageResult<VideoComment> result = videoService.pageListVideoComments(size, no, videoId);
+        IPage<VideoComment> result = videoService.pageListVideoComments(size, no, videoId);
         return new JsonResponse<>(result);
     }
 

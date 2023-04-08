@@ -8,16 +8,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="imooc-bilibili-zuul" />
-        <module name="imooc-bilibili-service" />
         <module name="imooc-bilibili-eureka" />
+        <module name="imooc-bilibili-service" />
         <module name="imooc-bilibili-dao" />
         <module name="imooc-bilibili-api" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="imooc-bilibili-eureka" target="1.8" />
-      <module name="imooc-bilibili-zuul" target="1.8" />
-    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">

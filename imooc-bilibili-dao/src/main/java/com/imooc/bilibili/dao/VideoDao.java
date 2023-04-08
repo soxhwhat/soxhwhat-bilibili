@@ -1,5 +1,6 @@
 package com.imooc.bilibili.dao;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.imooc.bilibili.domain.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -8,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 @Mapper
-public interface VideoDao {
+public interface VideoDao extends BaseMapper<Video> {
 
     Integer addVideos(Video video);
 

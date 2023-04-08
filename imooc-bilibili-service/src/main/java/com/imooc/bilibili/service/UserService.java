@@ -1,9 +1,10 @@
 package com.imooc.bilibili.service;
 
-import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.imooc.bilibili.dao.UserDao;
-import com.imooc.bilibili.domain.PageResult;
+import com.imooc.bilibili.dao.UserInfoDao;
 import com.imooc.bilibili.domain.RefreshTokenDetail;
 import com.imooc.bilibili.domain.User;
 import com.imooc.bilibili.domain.UserInfo;
@@ -24,6 +25,9 @@ public class UserService {
 
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private UserInfoDao userInfoDao;
 
     @Autowired
     private UserAuthService userAuthService;
@@ -100,8 +104,8 @@ public class UserService {
     }
 
     public User getUserInfo(Long userId) {
-        User user = userDao.getUserById(userId);
-        UserInfo userInfo = userDao.getUserInfoByUserId(userId);
+        User user = userDao.selectOne(new QueryWrapper<User>().eq("id", userId));
+        UserInfo userInfo = userInfoDao.selectOne(new QueryWrapper<UserInfo>().eq("userId", userId));
         user.setUserInfo(userInfo);
         return user;
     }
@@ -134,18 +138,6 @@ public class UserService {
         return userDao.getUserInfoByUserIds(userIdList);
     }
 
-    public PageResult<UserInfo> pageListUserInfos(JSONObject params) {
-        Integer no = params.getInteger("no");
-        Integer size = params.getInteger("size");
-        params.put("start", (no-1)*size);
-        params.put("limit", size);
-        Integer total = userDao.pageCountUserInfos(params);
-        List<UserInfo> list = new ArrayList<>();
-        if(total > 0){
-            list = userDao.pageListUserInfos(params);
-        }
-        return new PageResult<>(total, list);
-    }
 
     public Map<String, Object> loginForDts(User user) throws Exception{
         String phone = user.getPhone() == null ? "" : user.getPhone();
@@ -200,5 +192,11 @@ public class UserService {
 
     public String getRefreshTokenByUserId(Long userId) {
         return userDao.getRefreshTokenByUserId(userId);
+    }
+
+    public IPage<UserInfo> pageListUserInfos(Integer no, Integer size, String nick) {
+        IPage<UserInfo> page = new Page<>(no, size);
+        QueryWrapper<UserInfo> queryWrapper = new QueryWrapper<UserInfo>().like("nick", nick);
+        return userInfoDao.selectPage(page, queryWrapper);
     }
 }

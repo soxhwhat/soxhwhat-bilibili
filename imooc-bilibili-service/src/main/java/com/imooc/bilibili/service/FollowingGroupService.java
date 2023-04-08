@@ -1,5 +1,6 @@
 package com.imooc.bilibili.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.imooc.bilibili.dao.FollowingGroupDao;
 import com.imooc.bilibili.domain.FollowingGroup;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,8 @@ public class FollowingGroupService {
     private FollowingGroupDao followingGroupDao;
 
     public FollowingGroup getByType(String type){
-        return followingGroupDao.getByType(type);
+        return followingGroupDao.selectOne(new QueryWrapper<FollowingGroup>().eq("type", type));
+//        return followingGroupDao.getByType(type);
     }
 
     public FollowingGroup getById(Long id){

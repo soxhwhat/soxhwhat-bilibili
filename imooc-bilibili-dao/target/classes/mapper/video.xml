@@ -355,6 +355,9 @@
                 createTime
             )
             values
+--         collection：指定待迭代的集合名称，通常是 @Param("collectionName") 中指定的 collectionName；也可以是 bean.collectionName。
+--         item：迭代集合过程中，当前迭代的值
+--         separator：指定两个元素之前使用什么字符进行分割，如：in (1,2,3,4,5) 中的 “,”
             <foreach collection="pictureList" item="picture" separator=",">
                 (
                     #{picture.videoId},

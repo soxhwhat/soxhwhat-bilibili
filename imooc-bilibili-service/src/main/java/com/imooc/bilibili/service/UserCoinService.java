@@ -1,6 +1,8 @@
 package com.imooc.bilibili.service;
 
 
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.imooc.bilibili.dao.UserCoinDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
