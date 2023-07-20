@@ -1,5 +1,6 @@
 package com.imooc.bilibili.service.excel;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -11,7 +12,7 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("mdp_pct_partner_rela__log")
+@TableName("test_company_name")
 @JsonNaming(com.fasterxml.jackson.databind.PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class CompanyName {
 
@@ -21,6 +22,7 @@ public class CompanyName {
      * 主键
      */
     @JsonSerialize(using = ToStringSerializer.class)
+    @TableId
     private Long id;
 
     private String name;
