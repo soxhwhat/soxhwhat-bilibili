@@ -7,6 +7,8 @@ import com.imooc.bilibili.domain.User;
 import com.imooc.bilibili.domain.UserInfo;
 import com.imooc.bilibili.service.UserFollowingService;
 import com.imooc.bilibili.service.UserService;
+import com.imooc.bilibili.service.excel.HttpRequest;
+import com.imooc.bilibili.service.excel.Result;
 import com.imooc.bilibili.service.util.RSAUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +28,16 @@ public class UserApi {
 
     @Autowired
     private UserFollowingService userFollowingService;
+
+    @Autowired
+    private HttpRequest httpRequest;
+
+
+
+    @GetMapping("/test")
+    public Result test(){
+        return httpRequest.getCompanyDetails();
+    }
 
     @GetMapping("/users")
     public JsonResponse<User> getUserInfo(){
